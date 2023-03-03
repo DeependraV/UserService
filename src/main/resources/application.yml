@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: root
+    password: 9424934024
+    url: jdbc:mysql://localhost:3306/springjdbc
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8088
+
+
+
+
+
