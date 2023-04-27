@@ -1,9 +1,6 @@
 package com.lcwd.user.service.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "micro_user")
 public class User {
     @Id
@@ -26,6 +24,7 @@ public class User {
     @Column(name = "ABOUT")
     private  String about;
 
+    //This annotation is used to not store data is Database
     @Transient
     private List<Rating> ratings=new ArrayList<>();
 }

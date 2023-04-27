@@ -5,13 +5,82 @@ spring:
     url: jdbc:mysql://localhost:3306/springjdbc
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-00162135.okta.com/oauth2/default
+      client:
+        registration:
+          my-internal-client:
+            provider: okta
+            authorizationGrantType: client_credentials
+            scope: internal
+            client-id: 0oa90f6jz8MwtLpoS5d7
+            client-secret: 82Nxa14QszYgaM1Yzd9oHgXo4NHtbyYtsorWtWaA
+        provider:
+          okta:
+            issuer-uri: https://dev-00162135.okta.com/oauth2/default
+
+
   jpa:
     hibernate:
       ddl-auto: update
+  config:
+    import: configserver:http://localhost:8085
+  application:
+    name: USER-SERVICE
 server:
-  port: 8088
+  port: 8081
 
 
+#accuctor config
+#management:
+#  health:
+#    circuitbreakers:
+#      enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health
+#  endpoint:
+#    health:
+#      show-details: always
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
 
+  endpoint:
+    health:
+      show-details: always
 
+#resilience4j config
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelBreaker:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+  retry:
+    instances:
+      ratingHotelRetry:
+        maxAttempts: 5
+        waitDuration: 4s
+
+okta:
+  oauth2:
+    issuer: https://dev-00162135.okta.com/oauth2/default
+    audience: api://default
 
